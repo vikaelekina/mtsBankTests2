@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
-public class TestFilterCity extends BaseTest {
+public class Tests extends BaseTest {
     HomePage homePage = new HomePage();
     OfficiIBamkomati officiIBamkomati = new OfficiIBamkomati();
     RefinanceCreditPage refinanceCreditPage = new RefinanceCreditPage();
