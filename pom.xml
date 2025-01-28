@@ -71,9 +71,10 @@
 <!--                            junit.jupiter.execution.parallel.config.fixed.parallelism = 4-->
 <!--                        </configurationParameters>-->
 <!--                    </properties>-->
-<!--                    <parallel>methods</parallel> &lt;!&ndash; возможность параллельного выполнения &ndash;&gt;-->
-<!--                    <threadCount>3</threadCount> &lt;!&ndash; максимальное количество потоков &ndash;&gt;-->
-<!--                    <forkCount>1</forkCount>-->
+                    <parallel>methods</parallel>
+                    <threadCount>3</threadCount>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
                 </configuration>
                 <dependencies>
                     <dependency>

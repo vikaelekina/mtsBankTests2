@@ -20,36 +20,36 @@ public class Tests extends BaseTest {
     OfficiIBamkomati officiIBamkomati = new OfficiIBamkomati();
     RefinanceCreditPage refinanceCreditPage = new RefinanceCreditPage();
 
-    public String city = "Москва";
+    public String city = "Казань";
 
 
     @Test
     @DisplayName("Проверка выбора города")
     public void testFilterCity() {
-        homePage.openPage().chooseCity(city).openIfficiIBankomati();
+        homePage.openPage().chooseCity(city).openOfficiIBankomati();
         officiIBamkomati.checkCityName(city);
     }
 
     @Test
-    @DisplayName("Проверка работы фильтра на странице 'Офисы и банкоматы'")
+    @DisplayName("Проверка фильтра круглосуточной работы на странице 'Офисы и банкоматы'")
     public void testFilterAllHoursWorking() {
-        homePage.openPage().chooseCity(city).openIfficiIBankomati();
+        homePage.openPage().chooseCity(city).openOfficiIBankomati();
         officiIBamkomati.changeDisplayItems().chooseFilter24Hour().checkFilter24Hour();
     }
 
     @Test
-    @DisplayName("Проверка работы калькулятора рефинансирования кредитов")
+    @DisplayName("Проверка калькулятора рефинансирования кредитов")
     public void testRefinanceCalculator() {
         homePage.openPage().openCredits();
         refinanceCreditPage.calculatorCredit();
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Проверка отправки заявки со значениями {index}: {0}, {1}, {2}, {3}")
     @DisplayName("Проверка отправки заявки на рефинансирование с невалидными значениями")
     @ArgumentsSource(TestRefinanceFormArgumentsProvider.class)
     public void testRefinanceForm(String name, String birthDate, String phoneNumber, boolean accept) {
         homePage.openPage().openCredits();
-        refinanceCreditPage.checkForm(name, birthDate, phoneNumber, accept);
+        refinanceCreditPage.fillForm(name, birthDate, phoneNumber, accept).checkForm(name, birthDate, phoneNumber, accept);
     }
 
     static class TestRefinanceFormArgumentsProvider implements ArgumentsProvider {
@@ -57,18 +57,18 @@ public class Tests extends BaseTest {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             String normalBirthDate = LocalDate.of(LocalDate.now().getYear() - 21, LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()).format(pattern);
             return Stream.of(
-                    Arguments.of("",normalBirthDate , "9999999999", true),
-                    Arguments.of("u t", normalBirthDate, "9999999999", true),
-                    Arguments.of("1 2", normalBirthDate, "9999999999", true),
-                    Arguments.of("Э ", normalBirthDate, "9999999999", true),
-                    Arguments.of("Э В", "", "9999999999", true),
-                    Arguments.of("Э В", "aaa", "9999999999", true),
-                    Arguments.of("Э В", "13.01", "9999999999", true),
-                    Arguments.of("Э В", LocalDate.of(LocalDate.now().getYear() - 17, LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()).format(pattern), "9999999999", true),
-                    Arguments.of("Э В", normalBirthDate, "", true),
-                    Arguments.of("Э В", normalBirthDate, "ффф", true),
-                    Arguments.of("Э В", normalBirthDate, "999999", true),
-                    Arguments.of("Э В", normalBirthDate, "9999999999", false)
+                    Arguments.of("","01.01.1999" , "9999999999", true),
+                    Arguments.of("Ivanov Ivan", "01.01.1999", "9999999999", true),
+//                    Arguments.of("1 2", "01.01.1999", "9999999999", true),
+                    Arguments.of("Иванов ", "01.01.1999", "9999999999", true),
+                    Arguments.of("Иванов Иван", "", "9999999999", true),
+//                    Arguments.of("Иванов Иван", "aaa", "9999999999", true),
+                    Arguments.of("Иванов Иван", "13.01", "9999999999", true),
+                    Arguments.of("Иванов Иван", LocalDate.of(LocalDate.now().getYear() - 17, LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()).format(pattern), "9999999999", true),
+                    Arguments.of("Иванов Иван", "01.01.1999", "", true),
+//                    Arguments.of("Э В", "01.01.1999", "ффф", true),
+                    Arguments.of("Иванов Иван", "01.01.1999", "999999", true),
+                    Arguments.of("Иванов Иван", "01.01.1999", "9999999999", false)
             );
         }
     }

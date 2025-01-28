@@ -9,7 +9,6 @@ public class BaseTest {
     @BeforeAll
     public static void setUp() {
         Configuration.browser = "chrome";
-
         System.setProperty("chromeoptions.args","\"--no-sandbox\",\"--disable-dev-shm-usage\",\"--remote-debugging-port=9222\"");
     }
 
